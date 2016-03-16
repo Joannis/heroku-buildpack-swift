@@ -49,6 +49,13 @@ if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   curl http://llvm.org/releases/$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04.tar.xz -s | xz -d -c | tar x -C clang-$CLANG_VERSION &> /dev/null
 fi
 
+cd $BUILD_DIR
+git clone https://github.com/apple/swift-corelibs-libdispatch.git
+cd swift-corelibs-libdispatch
+sh ./autogen.sh
+./configure --with-swift-toolchain=$SWIFT_PREFIX/usr --prefix=$SWIFT_PREFIX/usr
+make
+
 export PATH="$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
 
 cd $BUILD_DIR
